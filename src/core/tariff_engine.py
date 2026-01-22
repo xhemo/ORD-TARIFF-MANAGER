@@ -304,7 +304,20 @@ class TariffEngine:
     def apply_bulk_change(self, df: pd.DataFrame, column: str, percentage: float, rows: List[int] = None) -> pd.DataFrame:
         """Applies a percentage change to a column in the DataFrame, optionally only on specific rows."""
         if column in df.columns:
-            # Only apply if column is numeric
+            # Attempt to convert to numeric (coercing errors to NaN, then we can check)
+            # This fixes issues where 'Object' columns contain numbers but were initialized as strings
+            try:
+                # We work on a copy to check validity if it's not already numeric
+                if not pd.api.types.is_numeric_dtype(df[column]):
+                    # Try to convert the whole column. 
+                    # If it contains real text, this might be bad, but for tariff columns it's usually intended.
+                    # safe strategy: Convert, apply calc, update.
+                    df[column] = pd.to_numeric(df[column], errors='coerce').fillna(0.0)
+
+            except Exception:
+                pass # If conversion fails, we proceed and checks below will fail safely
+            
+            # Now check again
             if pd.api.types.is_numeric_dtype(df[column]):
                 multiplier = (1 + percentage / 100)
                 if rows is not None and len(rows) > 0:

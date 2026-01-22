@@ -388,21 +388,39 @@ class MainWindow(QMainWindow):
 
     def add_row(self):
         df = self.model.getDataFrame()
+        
+        # Get defaults
+        defaults = self.engine.get_parameter_defaults()
+        
         if df.empty:
             # If dataframe is empty, create a new one with default columns
-            # This assumes `engine.get_current_schema()` returns the expected columns
             current_schema = self.engine.get_current_schema()
             if not current_schema:
                 QMessageBox.warning(self, "Warnung", "Kein Schema verfügbar, um eine neue Zeile zu erstellen. Bitte laden Sie zuerst einen Tarif oder erstellen Sie einen neuen.")
                 return
-            new_row_data = {col: "" for col in current_schema}
+            
+            # Use defaults or fallback to ""
+            new_row_data = {}
+            for col in current_schema:
+                new_row_data[col] = defaults.get(col, "")
+                
             new_df = pd.DataFrame([new_row_data])
             self.model.setDataFrame(new_df)
             self.update_ui_state()
         else:
             # Create a new row with the same columns as the existing DataFrame
-            new_row_data = {col: "" for col in df.columns}
-            new_row_df = pd.DataFrame([new_row_data])
+            new_row_data = {}
+            for col in df.columns:
+                # 1. Try engine defaults
+                if col in defaults:
+                    new_row_data[col] = defaults[col]
+                # 2. Try to infer from existing data (if previous rows exist)
+                elif len(df) > 0 and pd.api.types.is_numeric_dtype(df[col]):
+                    new_row_data[col] = 0.0
+                # 3. Fallback
+                else:
+                    new_row_data[col] = ""
+                    
             new_row_df = pd.DataFrame([new_row_data])
             df = pd.concat([df, new_row_df], ignore_index=True)
             self.model.setDataFrame(df)
