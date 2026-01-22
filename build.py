@@ -37,7 +37,7 @@ def build():
         '--windowed',                   # No console window (GUI mode)
         '--clean',                      # Clean cache
         '--noconfirm',                  # Overwrite output directory
-        # '--hidden-import=pandas',     # Often needed, but PyInstaller is usually smart
+        f'--paths={os.path.join(base_dir, "src")}', # Add src to search path!
     ] + add_data_args
 
     print("Building with arguments:", args)
