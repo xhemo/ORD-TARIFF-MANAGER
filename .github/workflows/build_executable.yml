@@ -7,6 +7,9 @@ on:
     branches: [ "main", "master" ]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: windows-latest
@@ -36,3 +39,15 @@ jobs:
       with:
         name: ORD_Tariff_Manager_Windows
         path: dist/ORD_Tariff_Manager.exe
+
+    - name: Create/Update Release
+      uses: softprops/action-gh-release@v1
+      if: github.ref == 'refs/heads/main'
+      with:
+        tag_name: latest
+        name: Latest Build
+        files: dist/ORD_Tariff_Manager.exe
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
