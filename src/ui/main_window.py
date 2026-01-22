@@ -8,19 +8,13 @@ from PySide6.QtCore import Qt, QDate, QSize, QTimer, QEvent
 from PySide6.QtGui import QColor, QPalette, QIcon, QPixmap, QPainter, QFont
 
 # Adjust import based on sys.path setup in main.py
-try:
-    from core.tariff_engine import TariffEngine
-except ImportError:
-    # Fallback if run directly or path issues
-    import sys
-    # sys.path.append(...) # This shouldn't be needed if main.py sets it up
-    from src.core.tariff_engine import TariffEngine
+from core.tariff_engine import TariffEngine
 
 from .models import PandasModel, FilterProxyModel
 from .widgets import FilterHeader, EnhancedTableView
 from .dialogs import BulkUpdateDialog, MatrixImportDialog, DefinitionEditorDialog
 
-from src.core.utils import get_resource_path
+from core.utils import get_resource_path
 
 def load_stylesheet():
     """Load the QSS styles from the file."""

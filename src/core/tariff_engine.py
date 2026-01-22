@@ -6,7 +6,7 @@ import datetime
 import os
 import copy
 
-from ..utils import get_resource_path
+from .utils import get_resource_path
 
 class TariffEngine:
     def __init__(self):
