@@ -1,0 +1,27 @@
+{
+    "spec_name": "SteppedVolumeDistanceConsolidation",
+    "description": "Volume based tariff (e.g. Velux)",
+    "unit_code": "CBM",
+    "currency_code": "EUR",
+    "id_orderkind_default": 2,
+    "columns": [
+        "maxDistance",
+        "maxVolume",
+        "minDistance",
+        "minVolume",
+        "price",
+        "rate",
+        "id_unit",
+        "id_orderkind"
+    ],
+    "defaults": {
+        "maxDistance": 0.00,
+        "maxVolume": 0.00,
+        "minDistance": 0.00,
+        "minVolume": 0.00,
+        "price": 0.00,
+        "rate": 0.00,
+        "id_unit": 9,
+        "id_orderkind": 2
+    }
+}

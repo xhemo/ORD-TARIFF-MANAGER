@@ -1,0 +1,27 @@
+{
+    "spec_name": "SteppedWeightDistanceConsolidation",
+    "description": "Weight based tariff ",
+    "unit_code": "kg",
+    "currency_code": "EUR",
+    "id_orderkind_default": 2,
+    "columns": [
+        "maxDistance",
+        "maxWeight",
+        "minDistance",
+        "minWeight",
+        "price",
+        "rate",
+        "id_unit",
+        "id_orderkind"
+    ],
+    "defaults": {
+        "maxDistance": 0.00,
+        "maxWeight": 0.00,
+        "minDistance": 0.00,
+        "minWeight": 0.00,
+        "price": 0.00,
+        "rate": 0.00,
+        "id_unit": 1,
+        "id_orderkind": 2
+    }
+}
